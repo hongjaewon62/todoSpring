@@ -4,6 +4,7 @@ import com.todo.todoSpring.Dto.TodoDto;
 import com.todo.todoSpring.Entity.Todo;
 import com.todo.todoSpring.Repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +15,29 @@ import java.util.stream.Collectors;
 public class TodoServiceImpl implements TodoService{
     private final TodoRepository todoRepository;
 
-    @Override           // 전체 조회
-    public List<TodoDto> getAllTodos() {
-        return todoRepository.findAll().stream().map(TodoDto::fromEntity).collect(Collectors.toList());
+    @Override
+    public List<TodoDto> getTodos(String sortOption) {
+        List<Todo> todos;
+
+        switch (sortOption) {
+            case "latest": // 최신순
+                todos = todoRepository.findAll(Sort.by(Sort.Direction.DESC, "createAt"));
+                break;
+            case "oldest": // 오래된순
+                todos = todoRepository.findAll(Sort.by(Sort.Direction.ASC, "createAt"));
+                break;
+            case "completed": // 완료
+                todos = todoRepository.findByCompleted(true, Sort.by(Sort.Direction.DESC, "createAt"));
+                break;
+            case "notCompleted": // 미완료
+                todos = todoRepository.findByCompleted(false, Sort.by(Sort.Direction.DESC, "createAt"));
+                break;
+            default: // 전체
+                todos = todoRepository.findAll(Sort.by(Sort.Direction.DESC, "createAt"));
+                break;
+        }
+
+        return todos.stream().map(TodoDto::fromEntity).toList();
     }
 
     @Override           // ID로 조회

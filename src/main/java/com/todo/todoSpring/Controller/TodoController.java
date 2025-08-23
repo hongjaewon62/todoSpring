@@ -16,8 +16,8 @@ public class TodoController {
     private final TodoService todoService;
 
     @GetMapping
-    public List<TodoDto> getAllTodos() {
-        return todoService.getAllTodos();
+    public List<TodoDto> getTodos(@RequestParam(name = "sortOption", defaultValue = "all") String sortOption) {
+        return todoService.getTodos(sortOption);
     }
 
     @GetMapping("/{id}")
@@ -37,7 +37,7 @@ public class TodoController {
 
     @PutMapping("/{id}/completed")
     public TodoDto updateCompleted(@PathVariable("id") Integer id, @RequestBody TodoDto todoDto) {
-        return todoService.updateTodo(id, todoDto);
+        return todoService.updateCompleted(id, todoDto);
     }
 
     @DeleteMapping("/{id}")
