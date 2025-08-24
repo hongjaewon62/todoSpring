@@ -53,5 +53,16 @@
 |PUT|/api/todoList/{id}/completed|할 일 완료 / 미완료 변경|
 |DELETE|/api/todoList/{id}|할 일 삭제|
 
+## 테스트 케이스
+SpringBoot Test에서 작성
+
+src/test/java/에서 실행 가능
+
+## 추가적인 업무 API
+정렬 API 작성
+
+## 데이터베이스
+Mysql 8.0.11 버전 사용
+
 ## 프론트 리포지토리
 https://github.com/hongjaewon62/TODO
